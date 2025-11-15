@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новогодний мотивационный тест</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0c1445 0%, #1a237e 50%, #283593 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(white 1px, transparent 1px),
+                radial-gradient(white 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .snowflake {
+            position: fixed;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border-left: 4px solid #4ecdc4;
+            transition: transform 0.3s ease;
+        }
+
+        .question:hover {
+            transform: translateX(5px);
+        }
+
+        .question-title {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #4ecdc4;
+            transform: scale(1.02);
+        }
+
+        .option.selected {
+            background: rgba(78, 205, 196, 0.3);
+            border-color: #4ecdc4;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffd700);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .result {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            margin-top: 30px;
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #ffd700;
+        }
+
+        .result-message {
+            font-size: 1.3em;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .new-year-wish {
+            font-size: 1.4em;
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-top: 30px;
+            text-shadow: 0 2px 10px rgba(255, 107, 107, 0.5);
+        }
+
+        .santa-hat {
+            font-size: 2em;
+            margin: 0 10px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ffd700);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .firework {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(var(--x), var(--y)) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--x), var(--y)) scale(20);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🎄 Новогодний мотивационный тест 🎄</h1>
+            <p class="subtitle">Раимонто, проверь свою готовность к новым свершениям в наступающем году!</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <form id="quizForm">
+            <div class="question">
+                <div class="question-title">1. Как ты относишься к постановке целей на новый год?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="3" required> Ставлю конкретные цели и планирую их
+                        достижение
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="2"> Есть общие пожелания, но без четкого плана
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="1"> Предпочитаю плыть по течению
+                    </label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">2. Что мотивирует тебя больше всего?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="3" required> Личностный рост и саморазвитие
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="2"> Успех в карьере и финансовая стабильность
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="1"> Гармония в отношениях и семье
+                    </label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">3. Как ты справляешься с трудностями?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="3" required> Вижу в них возможности для роста
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="2"> Стараюсь найти поддержку у близких
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="1"> Иногда опускаются руки, но потом беру себя в руки
+                    </label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">4. Насколько ты доволен своими достижениями в уходящем году?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="3" required> Доволен и готов к новым вызовам
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="2"> Есть успехи, но хотелось бы большего
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="1"> Есть над чем работать в новом году
+                    </label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title">5. Что для тебя значит "успех"?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="3" required> Реализация своего потенциала
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="2"> Баланс во всех сферах жизни
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="1"> Внутренняя гармония и счастье
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Узнать результат! 🎅</button>
+        </form>
+
+        <div class="result" id="result">
+            <div class="result-title" id="resultTitle"></div>
+            <div class="result-message" id="resultMessage"></div>
+            <div class="new-year-wish">
+                <span class="santa-hat">🎄</span>
+                С Наступающим Новым Годом! 🎄<br>
+                Пусть все твои цели сбудутся! ✨
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Создание снежинок
+        function createSnowflakes() {
+            const snowContainer = document.body;
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'snowflake';
+                    const size = Math.random() * 5 + 2;
+                    snowflake.style.width = `${size}px`;
+                    snowflake.style.height = `${size}px`;
+                    snowflake.style.left = `${Math.random() * 100}vw`;
+                    snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                    snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                    snowflake.style.opacity = Math.random() * 0.6 + 0.2;
+                    snowContainer.appendChild(snowflake);
+                }, i * 200);
+            }
+        }
+
+        // Создание фейерверка
+        function createFirework(x, y) {
+            const colors = ['#ff6b6b', '#ffd700', '#4ecdc4', '#45b7d1', '#96ceb4'];
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.setProperty('--x', `${(Math.random() - 0.5) * 200}px`);
+                particle.style.setProperty('--y', `${(Math.random() - 0.5) * 200}px`);
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                document.body.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+        }
+
+        // Обновление прогресс-бара
+        function updateProgress() {
+            const questions = document.querySelectorAll('.question');
+            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+            const progress = (answered / questions.length) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+        }
+
+        // Обработка выбора ответов
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function () {
+                const question = this.closest('.question');
+                question.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                updateProgress();
+            });
+        });
+
+        // Обработка отправки формы
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            let totalScore = 0;
+
+            for (let [key, value] of formData.entries()) {
+                totalScore += parseInt(value);
+            }
+
+            const resultDiv = document.getElementById('result');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultMessage = document.getElementById('resultMessage');
+
+            // Определение результата
+            if (totalScore >= 13) {
+                resultTitle.textContent = '🎉 Раим, ты - настоящий мотиватор! 🎉';
+                resultMessage.textContent = 'Твоя целеустремленность и позитивный настрой впечатляют! В новом году тебя ждут великие свершения. Продолжай в том же духе - мир готов к твоим грандиозным планам!';
+            } else if (totalScore >= 9) {
+                resultTitle.textContent = '⭐ Раим, у тебя отличный потенциал! ⭐';
+                resultMessage.textContent = 'Ты находишься на правильном пути! В новом году сосредоточься на конкретных целях и не бойся мечтать по-крупному. У тебя есть все шансы достичь желаемого!';
+            } else {
+                resultTitle.textContent = '✨ Раим, время перемен! ✨';
+                resultMessage.textContent = 'Новый год - прекрасная возможность начать все с чистого листа! Верь в себя, ставь маленькие цели и празднуйте каждую победу. Ты способен на большее, чем думаешь!';
+            }
+
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+
+            // Запуск фейерверков
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createFirework(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight
+                    );
+                }, i * 300);
+            }
+        });
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function () {
+            createSnowflakes();
+            updateProgress();
+        });
+    </script>
+</body>
+
+</html>
